@@ -66,10 +66,10 @@ class Resfriador_FermentWifi(ActorBase):
 			mqttc.publish(self.topic,"0")
 			cbpi.app.logger.info("enviado liga resfriador")
 			print("enviado liga resfriador")
-			print(self.topic)
+			print((self.topic))
 				
 		else:
-			print "Atrasando a ativação do resfriador"
+			print("Atrasando a ativação do resfriador")
 			cbpi.app.logger.info("Atrasando a ativação do resfriador")
 			self.delayed = True
 		
@@ -80,7 +80,7 @@ class Resfriador_FermentWifi(ActorBase):
 		self.topic=self.key0+"_RaspiOnOff"
 		mqttc.publish(self.topic,"2")
 		cbpi.app.logger.info("desligando o resfriador")
-		print(self.topic)
+		print((self.topic))
 		self.delayed = False
 			
 			
@@ -111,9 +111,9 @@ class Aquecedor_FermentWifi(ActorBase):
 			self.topic=self.key0+"_RaspiOnOff"
 			mqttc.publish(self.topic,"1")
 			print("enviado liga aquecedor")
-			print(self.topic)
+			print((self.topic))
 		else:
-			print "Atrasando a ativação do aquecedor"
+			print("Atrasando a ativação do aquecedor")
 			self.delayed2 = True
 				
 				
@@ -124,7 +124,7 @@ class Aquecedor_FermentWifi(ActorBase):
 
 		self.topic=self.key0+"_RaspiOnOff"
 		mqttc.publish(self.topic,"3")
-		print(self.topic)
+		print((self.topic))
 		self.delayed2 = False			
 
 		
@@ -147,7 +147,7 @@ class FermentWifiSensor(SensorActive):
                 def on_message(client, userdata, msg):
             
                         try:
-                                print "payload " + msg.payload        
+                                print("payload " + msg.payload)        
                                 json_data = json.loads(msg.payload)
                                 #print json_data
                                 val = json_data
@@ -155,13 +155,13 @@ class FermentWifiSensor(SensorActive):
                                         for key in self.payload_text:
                                                 val = val.get(key, None)
                                 #print val
-                                if isinstance(val, (int, float, basestring)):
+                                if isinstance(val, (int, float, str)):
                                         q.put({"id": on_message.sensorid, "value": val})
-                                        print(on_message.sensorid)
+                                        print((on_message.sensorid))
                                         print("   ")
                                         print(val)
                         except Exception as e:
-                                print e
+                                print(e)
                 on_message.sensorid = self.id
                 mqttc.subscribe(self.topic)
                 mqttc.message_callback_add(self.topic, on_message)
@@ -192,7 +192,7 @@ def update_compressors(api):
 				Resfriador_FermentWifi.topic=Resfriador_FermentWifi.key0+"_RaspiOnOff"
 				mqttc.publish(Resfriador_FermentWifi.topic,"0")
 				print("enviado liga resfriador")
-				print(Resfriador_FermentWifi.topic)
+				print((Resfriador_FermentWifi.topic))
 				cbpi.app.logger.info("enviado liga resfriador após atraso")
 				Resfriador_FermentWifi.compressor_on=True
 				#Resfriador_FermentWifi.on()
@@ -203,7 +203,7 @@ def update_compressors(api):
 				Aquecedor_FermentWifi.topic=Aquecedor_FermentWifi.key0+"_RaspiOnOff"
 				mqttc.publish(Aquecedor_FermentWifi.topic,"1")
 				print("enviado liga aquecedor")
-				print(Aquecedor_FermentWifi.topic)
+				print((Aquecedor_FermentWifi.topic))
 				cbpi.app.logger.info("enviado liga aquecedor após atraso")
 				Aquecedor_FermentWifi.compressor_on2=True
 				#Aquecedor_FermentWifi.on()
@@ -214,7 +214,7 @@ def update_compressors(api):
 
 def initMQTT(app):
 
-        print "INICIALIZA O MODULO FERMENTWIFI"
+        print("INICIALIZA O MODULO FERMENTWIFI")
 
 
         def mqtt_reader(api):
@@ -237,6 +237,6 @@ def initMQTT(app):
 	else:
 		file.close()
 	cbpi.socketio.start_background_task(target=mqtt_reader, api=app)
-	print "READY"
+	print("READY")
 
 
